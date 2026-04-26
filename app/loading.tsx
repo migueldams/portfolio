@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 function Loading() {
 
     useEffect(() => {
-        const timer = new Promise(resolve => setTimeout(resolve, 2000))
+        const timer = new Promise(resolve => setTimeout(resolve, 5000))
        
     }, [])
 

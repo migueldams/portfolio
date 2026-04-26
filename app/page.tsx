@@ -29,7 +29,7 @@ export default function Home() {
         </p>
         <ButtonShadow className="rounded-full font-bold text-white text-2xl bg-amber-500 hover:bg-amber-600 p-6">Learn More</ButtonShadow>
       </div>
-      <div className="w-full  h-150  text-white flex flex-col items-center justify-center z-10">
+      <div id="projects" className="w-full  h-150  text-white flex flex-col items-center justify-center z-10">
         <Spline />
       </div>
       <Service />

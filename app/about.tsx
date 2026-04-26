@@ -3,9 +3,9 @@ import profil from "@/assets/imageAbout2.png"
 
 function About() {
     return (
-        <div className='w-full min-h-screen flex items-center justify-center  text-white p-8'>
-            <div className='flex-col md:flex-row w-full md:w-4/5 flex items-center justify-center'>
-                <div className='w-full md:w-1/2 flex flex-col items-center justify-center gap-10 p-20'>
+        <div id='about' className='w-full min-h-screen flex items-center justify-center  text-white p-8'>
+            <div className='flex-col lg:flex-row w-full md:w-4/5 flex items-center justify-center'>
+                <div className='w-full lg:w-1/2 flex flex-col items-center justify-center gap-10 py-20 px-10'>
                     <p className='text-3xl text-center font-bold mb-6'>Tchinda Douanla Miguel</p>
                     <p className='text-xl text-gray-300 mb-8 leading-relaxed'>
                         Développeur passionné et innovant avec une expertise en technologies web modernes.
@@ -40,7 +40,7 @@ function About() {
                         </div>
                     </div>
                 </div>
-                <div className='w-full md:w-1/2 flex justify-center '>
+                <div className='w-full lg:w-1/2 flex justify-center '>
                     <img src={profil.src} alt="Profile" className="w-full md:w-3/4 h-250 rounded-full object-cover  " />
                 </div>
             </div>
