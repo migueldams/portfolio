@@ -49,12 +49,12 @@ function Contact() {
     }
 
     return (
-        <div className='w-3/4 flex h-screen p-20  items-center'>
-            <div className='w-1/3'>
+        <div className='w-full flex-col gap-8 md:flex-row md:w-3/4 flex h-screen p-20  items-center'>
+            <div className='w-full md:w-1/3'>
                 <h1 className='text-4xl font-bold text-white mb-6'>Get In Touch</h1>
                 <p className='text-white'>Feel free to reach out to me for any inquiries or collaborations.</p>
             </div>
-            <div className='w-2/3'>
+            <div className='w-full md:w-2/3'>
                 <form onSubmit={handleSubmit}>
                     <div className='grid grid-cols-2 gap-8'>
                         <div className='space-y-2'>
@@ -87,6 +87,7 @@ function Contact() {
                         Send Message
                     </button>
                 </form>
+
             </div>
         </div>
     )

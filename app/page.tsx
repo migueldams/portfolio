@@ -11,6 +11,7 @@ import Slide from "@/components/common/slide";
 import Recent from "./recent";
 import { HiOutlineEyeSlash } from "react-icons/hi2";
 import Contact from "./contact";
+import Design from "./design";
 
 
 
@@ -18,7 +19,7 @@ export default function Home() {
 
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-transparent">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-black ">
       <Scrollpage />
       <About />
       <div className="w-full h-100  text-white flex flex-col items-center justify-center z-10">
@@ -37,6 +38,7 @@ export default function Home() {
         <div className="w-100 h-80 absolute z-30 bg-gradient-to-r from-black via-transparent to-transparent top-0 left-0"></div>
         <Slide />
       </div>
+      <Design />
       <Recent />
       <Contact />
     </div>
