@@ -1,70 +1,67 @@
-'use client'
+// components/DeviceGuard.tsx
+'use client';
 
-import { useDevicePerformance } from '@/hooks/useDevicePerformences'
-import { ReactNode } from 'react'
+import React, { useEffect, useState } from 'react';
+import { checkDevice, type DeviceReport } from '@/hooks/CheckDevice';
 
-interface DeviceGateProps {
-    children: ReactNode
-    threshold?: number  // Score minimum pour accéder, défaut 40/100
-}
-
-export function DeviceGate({ children, threshold = 40 }: DeviceGateProps) {
-    const { level, score } = useDevicePerformance(threshold)
-
-    // Pendant la vérification : rien (le Loading.tsx prend le relais)
-    if (level === 'checking') return null
-
-    // Appareil trop faible : page de blocage
-    if (level === 'low') return <LowEndBlocker score={score} />
-
-    return <>{children}</>
-}
-
-function LowEndBlocker({ score }: { score: number }) {
+function BlockScreen({ report }: { report: DeviceReport }) {
     return (
-        <div className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center px-8 text-center">
-            {/* Icône minimaliste */}
-            <div className="relative mb-8">
-                <div className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full border-2 border-amber-500/60 flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-amber-500" />
-                    </div>
-                </div>
-                {/* Score en arc */}
-                <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[10px] text-white/30 tabular-nums tracking-widest">
-                    {score}/100
-                </span>
+        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black px-8">
+            {/* Icône */}
+            <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
+                <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="4" width="32" height="40" rx="4" stroke="#f59e0b" strokeWidth="2.5"/>
+                    <circle cx="24" cy="38" r="2" fill="#f59e0b"/>
+                    <path d="M24 13v10" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round"/>
+                    <path d="M24 26v2" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round"/>
+                </svg>
             </div>
 
-            <h1 className="text-white text-2xl font-bold mb-3">
-                Appareil non compatible
+            {/* Titre */}
+            <h1 className="mb-3 text-center text-2xl font-bold text-white">
+                Appareil non supporté
             </h1>
-            <p className="text-white/40 text-sm max-w-xs leading-relaxed mb-8">
-                Ce portfolio utilise des animations avancées qui nécessitent
-                un appareil plus récent pour une expérience optimale.
+            <p className="mb-8 max-w-sm text-center text-sm text-white/50">
+                Ce portfolio utilise des animations 3D avancées qui nécessitent
+                un ordinateur de bureau pour une expérience optimale.
             </p>
 
-            {/* Suggestions */}
-            <div className="flex flex-col gap-2 w-full max-w-xs">
-                {[
-                    'Ouvrir sur un PC ou Mac',
-                    'Utiliser Chrome ou Safari récent',
-                    'Fermer les autres onglets',
-                ].map((tip) => (
-                    <div key={tip} className="flex items-center gap-3 text-left px-4 py-3 rounded-lg border border-white/5 bg-white/[0.03]">
-                        <div className="w-1 h-1 rounded-full bg-amber-500 flex-shrink-0" />
-                        <span className="text-white/50 text-xs">{tip}</span>
-                    </div>
-                ))}
+            {/* Raisons détaillées */}
+            <div className="w-full max-w-sm rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="mb-3 text-xs font-medium uppercase tracking-widest text-white/30">
+                    Détails
+                </p>
+                <ul className="flex flex-col gap-2">
+                    {report.reasons.map((reason, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-white/60">
+                            <span className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-red-500" />
+                            {reason}
+                        </li>
+                    ))}
+                </ul>
             </div>
 
-            {/* Lien de contournement discret */}
-            <button
-                onClick={() => window.location.search = '?bypass=1'}
-                className="mt-10 text-[11px] text-white/15 hover:text-white/30 transition-colors underline underline-offset-4 cursor-pointer"
-            >
-                Continuer quand même
-            </button>
+            {/* Footer */}
+            <p className="mt-10 text-xs text-white/20">
+                miguel.dev — Desktop only
+            </p>
         </div>
-    )
+    );
+}
+
+export function DeviceGuard({ children }: { children: React.ReactNode }) {
+    // null = vérification pas encore faite (SSR safe)
+    const [report, setReport] = useState<DeviceReport | null>(null);
+
+    useEffect(() => {
+        // Uniquement côté client
+        setReport(checkDevice());
+    }, []);
+
+    // Pendant l'hydratation SSR → on affiche rien (évite flash)
+    if (report === null) return null;
+
+    if (report.blocked) return <BlockScreen report={report} />;
+
+    return <>{children}</>;
 }

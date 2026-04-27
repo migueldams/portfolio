@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/common/theme-provider"
 import Header from "@/components/common/header";
 import Footer from "@/components/common/footer";
-import { DeviceGate } from "@/components/common/deviceGate";
+import { DeviceGuard } from "@/components/common/deviceGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,11 +33,11 @@ export default function RootLayout({
       >
         <div className="w-full h-screen bg-black text-white ">
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <DeviceGate threshold={40}>
+            <DeviceGuard>
               <Header />
               {children}
               <Footer />
-            </DeviceGate>
+            </DeviceGuard>
           </ThemeProvider>
         </div>
       </body>
